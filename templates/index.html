@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PDF Summary Agent</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      body {
+        font-family: "Georgia", "Times New Roman", serif;
+        margin: 40px auto;
+        max-width: 880px;
+        padding: 0 16px;
+        color: #1f1f1f;
+        background: #f6f1e8;
+      }
+      h1 {
+        font-size: 28px;
+        letter-spacing: 0.2px;
+      }
+      .card {
+        background: #fffdf7;
+        border: 1px solid #e6ddcf;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 6px 18px rgba(40, 30, 20, 0.08);
+      }
+      .row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      input[type="file"] {
+        padding: 8px;
+      }
+      button {
+        background: #2b2a2a;
+        color: #fff;
+        border: none;
+        padding: 10px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #1f1f1f;
+      }
+      textarea {
+        width: 100%;
+        height: 260px;
+        margin-top: 12px;
+        padding: 12px;
+        border: 1px solid #e1d6c7;
+        border-radius: 10px;
+        background: #fffefb;
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+      }
+      .meta {
+        margin-top: 12px;
+        color: #5b5248;
+      }
+      .error {
+        color: #a12f2f;
+        margin-top: 8px;
+      }
+      @media (max-width: 600px) {
+        body {
+          margin: 20px auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>PDF Summary Agent</h1>
+    <div class="card">
+      <form method="post" action="/summarize" enctype="multipart/form-data">
+        <div class="row">
+          <input type="file" name="pdf" accept="application/pdf" required />
+          <button type="submit">Generate Summary</button>
+        </div>
+      </form>
+      {% if error %}
+        <div class="error">{{ error }}</div>
+      {% endif %}
+      <textarea readonly>{{ summary }}</textarea>
+      {% if score is not none %}
+        <div class="meta">Confidence score: {{ "%.2f"|format(score) }}</div>
+      {% endif %}
+    </div>
+  </body>
+</html>
